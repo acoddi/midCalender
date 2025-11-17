@@ -71,7 +71,9 @@ Schedule::Schedule(QWidget *parent)
         if(end < start)
             std::swap(start, end);
 
-        addTodoItem(todoText);
+        // 내부적으로 날짜별로 저장
+        addTodoItem(todoText, start, end);
+        // 캘린더 위젯에도 전달
         emit todoAdded(todoText, start, end);
 
         // 입력 초기화
@@ -83,12 +85,26 @@ Schedule::Schedule(QWidget *parent)
     connect(deleteBtn, &QPushButton::clicked, this, &Schedule::hide);
 }
 
-void Schedule::addTodoItem(const QString &text)
+void Schedule::addTodoItem(const QString &text, const QDate &start, const QDate &end)
 {
-    if(!todoListWidget || text.trimmed().isEmpty())
+    QString trimmed = text.trimmed();
+    if(!todoListWidget || trimmed.isEmpty())
         return;
 
-    todoListWidget->addItem(text.trimmed());
+    QDate from = start;
+    QDate to = end;
+    if(!from.isValid() || !to.isValid())
+        from = to = selectedDate.isValid() ? selectedDate : QDate::currentDate();
+    if(to < from)
+        std::swap(from, to);
+
+    // 선택된 기간의 모든 날짜에 이 할 일을 저장
+    for(QDate day = from; day <= to; day = day.addDays(1)) {
+        todosByDate[day].append(trimmed);
+    }
+
+    // 현재 선택된 날짜 리스트를 다시 그림
+    refreshTodoList();
 }
 
 void Schedule::setSelectedDate(const QDate &date)
@@ -98,4 +114,61 @@ void Schedule::setSelectedDate(const QDate &date)
         startDateEdit->setDate(selectedDate);
     if(endDateEdit)
         endDateEdit->setDate(selectedDate);
+
+    // 날짜 변경 시 해당 날짜의 할 일 목록 표시
+    refreshTodoList();
+}
+
+void Schedule::refreshTodoList()
+{
+    if(!todoListWidget)
+        return;
+
+    todoListWidget->clear();
+
+    if(!selectedDate.isValid())
+        return;
+
+    const QStringList items = todosByDate.value(selectedDate);
+
+    for(int i = 0; i < items.size(); ++i) {
+        const QString &text = items.at(i);
+
+        // 리스트 아이템(데이터용)
+        QListWidgetItem *item = new QListWidgetItem(todoListWidget);
+        item->setSizeHint(QSize(0, 30));
+
+        // 아이템에 표시될 위젯 (텍스트 + 삭제 버튼)
+        QWidget *rowWidget = new QWidget(todoListWidget);
+        QHBoxLayout *rowLayout = new QHBoxLayout(rowWidget);
+        rowLayout->setContentsMargins(2, 2, 2, 2);
+        rowLayout->setSpacing(4);
+
+        QLabel *label = new QLabel(text, rowWidget);
+        QPushButton *deleteBtn = new QPushButton("삭제", rowWidget);
+        deleteBtn->setFixedWidth(40);
+
+        rowLayout->addWidget(label);
+        rowLayout->addStretch();
+        rowLayout->addWidget(deleteBtn);
+
+        todoListWidget->setItemWidget(item, rowWidget);
+
+        // 삭제 버튼 클릭 시 해당 인덱스의 할 일 삭제
+        connect(deleteBtn, &QPushButton::clicked, this, [=]() {
+            if(!selectedDate.isValid())
+                return;
+
+            QStringList &listRef = todosByDate[selectedDate];
+            int row = todoListWidget->row(item);
+            if(row >= 0 && row < listRef.size()) {
+                const QString removedText = listRef.at(row);
+                listRef.removeAt(row);
+                // 캘린더에도 삭제 알림
+                emit todoRemoved(removedText, selectedDate);
+            }
+
+            refreshTodoList();
+        });
+    }
 }

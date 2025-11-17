@@ -170,6 +170,31 @@ void CalendarWidget::addSchedule(const QDate &date, const QString &text)
     }
 }
 
+void CalendarWidget::removeSchedule(const QDate &date, const QString &text)
+{
+    if(!date.isValid())
+        return;
+
+    if(!scheduleData.contains(date))
+        return;
+
+    QStringList &list = scheduleData[date];
+    QString trimmed = text.trimmed();
+
+    // 동일한 텍스트의 첫 번째 항목만 제거
+    int idx = list.indexOf(trimmed);
+    if(idx != -1)
+        list.removeAt(idx);
+
+    if(list.isEmpty())
+        scheduleData.remove(date);
+
+    if (date.year() == year && date.month() == month)
+    {
+        updateCellSchedules(date);
+    }
+}
+
 void CalendarWidget::updateCellSchedules(const QDate &date)
 {
     if(date.year() != year || date.month() != month)
@@ -198,7 +223,8 @@ void CalendarWidget::updateCellSchedules(const QDate &date)
     }
 
     QStringList visibleLines;
-    const int maxVisible = 3;
+    // 화면에 직접 보여줄 최대 일정 개수 (나머지는 +N 으로 표시)
+    const int maxVisible = 2;
     const int visibleCount = qMin(entries.size(), maxVisible);
     for(int i = 0; i < visibleCount; ++i)
     {

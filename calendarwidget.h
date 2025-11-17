@@ -16,6 +16,7 @@ public:
     explicit CalendarWidget(QWidget *parent = nullptr);
 
     void addSchedule(const QDate &date, const QString &text);
+    void removeSchedule(const QDate &date, const QString &text);
 
 private slots:
     void showNextMonth();

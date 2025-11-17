@@ -44,6 +44,11 @@ MainWindow::MainWindow(QWidget *parent)
             calender->addSchedule(day, text);
         }
     });
+
+    // 스케줄 창에서 삭제된 할 일은 캘린더에서도 삭제
+    connect(schedule, &Schedule::todoRemoved, this, [=](const QString &text, const QDate &date) {
+        calender->removeSchedule(date, text);
+    });
 }
 
 MainWindow::~MainWindow()
