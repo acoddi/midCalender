@@ -2,9 +2,9 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QDate>
-#include <QTextEdit>
 #include <QHeaderView>
 #include <QDebug>
+#include <QFrame>
 
 CalendarWidget::CalendarWidget(QWidget *parent)
     : QWidget(parent)
@@ -22,12 +22,12 @@ void CalendarWidget::setupUI()
     QVBoxLayout *layout = new QVBoxLayout(this);
     QHBoxLayout *topLayout = new QHBoxLayout();
 
-    prevBtn = new QPushButton("이전 달", this);
-    nextBtn = new QPushButton("다음 달", this);
+    prevBtn = new QPushButton("<", this);
+    nextBtn = new QPushButton(">", this);
     monthLabel = new QLabel(QDate(year, month, 1).toString("yyyy-MM"), this);
 
-    prevBtn->setFixedWidth(60);
-    nextBtn->setFixedWidth(60);
+    prevBtn->setFixedWidth(70);
+    nextBtn->setFixedWidth(70);
 
     topLayout->addWidget(prevBtn);
     topLayout->addWidget(monthLabel, 1, Qt::AlignCenter);
@@ -41,23 +41,28 @@ void CalendarWidget::setupUI()
     table->setHorizontalHeaderLabels(weekDays);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     table->verticalHeader()->setVisible(false);
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    // 행 높이 충분히
+    //행 높이 설정
     for(int i = 0; i < 6; ++i)
         table->setRowHeight(i, 80);
 
+    //레이아웃에 테이블 추가
     layout->addWidget(table);
 
     // 시그널 연결
     connect(prevBtn, &QPushButton::clicked, this, &CalendarWidget::showPrevMonth);
     connect(nextBtn, &QPushButton::clicked, this, &CalendarWidget::showNextMonth);
     connect(table, &QTableWidget::cellDoubleClicked, this, &CalendarWidget::onCellDoubleClicked);
+
 }
 
 void CalendarWidget::populateCalendar()
 {
+    //테이블 초기화
     table->clearContents();
 
+    //테이블 날짜 입력
     QDate firstDay(year, month, 1);
     int startColumn = firstDay.dayOfWeek() % 7; // 일요일=0
     int daysInMonth = firstDay.daysInMonth();
@@ -76,20 +81,31 @@ void CalendarWidget::populateCalendar()
 
             if(day <= daysInMonth)
             {
-                QWidget *cellWidget = new QWidget();
+                QWidget *cellWidget = new QWidget(this);
+                table->setCellWidget(row, col, cellWidget);
+
                 QVBoxLayout *cellLayout = new QVBoxLayout(cellWidget);
                 cellLayout->setContentsMargins(2,2,2,2);
                 cellLayout->setSpacing(2);
 
-                QLabel *dateLabel = new QLabel(QString::number(day));
+                QLabel *dateLabel = new QLabel(QString::number(day), cellWidget);
                 dateLabel->setStyleSheet("font-weight:bold;");
                 cellLayout->addWidget(dateLabel);
 
-                QLabel *scheduleContent = new QLabel();
-                scheduleContent->setFixedHeight(50);
+                QFrame *line = new QFrame(cellWidget);
+                line->setFrameShape(QFrame::HLine);
+                line->setFrameShadow(QFrame::Sunken);
+                cellLayout->addWidget(line);
+
+                QLabel *scheduleContent = new QLabel(cellWidget);
+                scheduleContent->setMinimumHeight(100);
+                scheduleContent->setWordWrap(true);
+                scheduleContent->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+                scheduleContent->setObjectName("scheduleContent");
                 cellLayout->addWidget(scheduleContent);
 
-                table->setCellWidget(row, col, cellWidget);
+                QDate cellDate(year, month, day);
+                updateCellSchedules(cellDate);
 
                 day++;
             }
@@ -135,8 +151,67 @@ void CalendarWidget::onCellDoubleClicked(int row, int column)
         return;
 
     clickedDate.setDate(year, month, day);
-    qDebug()<<"clicked";
+    qDebug()<<"clicked"<<clickedDate;
 
-    emit dateDoubleClicked(clickedDate); // MainWindow에서 연결
+    emit dateDoubleClicked(clickedDate);
 }
+
+void CalendarWidget::addSchedule(const QDate &date, const QString &text)
+{
+    QString trimmed = text.trimmed();
+    if(!date.isValid() || trimmed.isEmpty())
+        return;
+
+    scheduleData[date].append(trimmed);
+
+    if (date.year() == year && date.month() == month)
+    {
+        updateCellSchedules(date);
+    }
+}
+
+void CalendarWidget::updateCellSchedules(const QDate &date)
+{
+    if(date.year() != year || date.month() != month)
+        return;
+
+    QDate firstDay(year, month, 1);
+    int startColumn = firstDay.dayOfWeek() % 7;
+    int day = date.day();
+    int index = day + startColumn - 1;
+    int row = index / 7;
+    int col = index % 7;
+
+    QWidget *cellWidget = table->cellWidget(row, col);
+    if(!cellWidget)
+        return;
+
+    QLabel *scheduleContent = cellWidget->findChild<QLabel*>("scheduleContent");
+    if(!scheduleContent)
+        return;
+
+    const QStringList entries = scheduleData.value(date);
+    if(entries.isEmpty())
+    {
+        scheduleContent->clear();
+        return;
+    }
+
+    QStringList visibleLines;
+    const int maxVisible = 3;
+    const int visibleCount = qMin(entries.size(), maxVisible);
+    for(int i = 0; i < visibleCount; ++i)
+    {
+        visibleLines << QStringLiteral("• %1").arg(entries.at(i));
+    }
+
+    if(entries.size() > maxVisible)
+    {
+        visibleLines << QStringLiteral("+%1 더보기").arg(entries.size() - maxVisible);
+    }
+
+    scheduleContent->setText(visibleLines.join("\n"));
+}
+
+
 
