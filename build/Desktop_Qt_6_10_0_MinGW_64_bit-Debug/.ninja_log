@@ -1,0 +1,27 @@
+# ninja log v6
+7	621	7850438041541205	calenderProject_autogen/timestamp	9c44d9fd6cc7b47e
+7	621	7850438041541205	calenderProject_autogen/mocs_compilation.cpp	9c44d9fd6cc7b47e
+7	621	7850438041541205	D:/qt_study/calenderProject/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/calenderProject_autogen/timestamp	9c44d9fd6cc7b47e
+7	621	7850438041541205	D:/qt_study/calenderProject/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/calenderProject_autogen/mocs_compilation.cpp	9c44d9fd6cc7b47e
+624	2619	7850438042297970	CMakeFiles/calenderProject.dir/calenderProject_autogen/mocs_compilation.cpp.obj	196c16ee60b550b0
+627	2654	7850438042332639	CMakeFiles/calenderProject.dir/main.cpp.obj	2d010a109b334a40
+630	2695	7850438042362524	CMakeFiles/calenderProject.dir/mainwindow.cpp.obj	b0b14d3ff94c760f
+2695	2983	7850438063010786	calenderProject.exe	369ca59d1042f9c5
+37	234	7850438912937265	calenderProject_autogen/timestamp	9c44d9fd6cc7b47e
+37	234	7850438912937265	calenderProject_autogen/mocs_compilation.cpp	9c44d9fd6cc7b47e
+37	234	7850438912937265	D:/qt_study/calenderProject/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/calenderProject_autogen/timestamp	9c44d9fd6cc7b47e
+37	234	7850438912937265	D:/qt_study/calenderProject/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/calenderProject_autogen/mocs_compilation.cpp	9c44d9fd6cc7b47e
+235	1975	7850438914919357	CMakeFiles/calenderProject.dir/mainwindow.cpp.obj	b0b14d3ff94c760f
+1975	2142	7850438932319781	calenderProject.exe	369ca59d1042f9c5
+45	236	7850458688800420	calenderProject_autogen/timestamp	9c44d9fd6cc7b47e
+45	236	7850458688800420	calenderProject_autogen/mocs_compilation.cpp	9c44d9fd6cc7b47e
+45	236	7850458688800420	D:/qt_study/calenderProject/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/calenderProject_autogen/timestamp	9c44d9fd6cc7b47e
+45	236	7850458688800420	D:/qt_study/calenderProject/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/calenderProject_autogen/mocs_compilation.cpp	9c44d9fd6cc7b47e
+236	2345	7850458690716352	CMakeFiles/calenderProject.dir/mainwindow.cpp.obj	b0b14d3ff94c760f
+2346	2516	7850458711817334	calenderProject.exe	369ca59d1042f9c5
+41	195	7850459845471398	calenderProject_autogen/timestamp	9c44d9fd6cc7b47e
+41	195	7850459845471398	calenderProject_autogen/mocs_compilation.cpp	9c44d9fd6cc7b47e
+41	195	7850459845471398	D:/qt_study/calenderProject/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/calenderProject_autogen/timestamp	9c44d9fd6cc7b47e
+41	195	7850459845471398	D:/qt_study/calenderProject/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/calenderProject_autogen/mocs_compilation.cpp	9c44d9fd6cc7b47e
+195	2271	7850459847007808	CMakeFiles/calenderProject.dir/mainwindow.cpp.obj	b0b14d3ff94c760f
+2271	2420	7850459867773730	calenderProject.exe	369ca59d1042f9c5
