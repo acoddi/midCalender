@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include"CalendarWidget.h"
+#include"schedule.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -19,5 +21,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    CalendarWidget *calender;
+    Schedule *schedule;
 };
 #endif // MAINWINDOW_H
