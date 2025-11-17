@@ -1,0 +1,20 @@
+# Qt 빌드 폴더 무시하기
+build/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.log
+*.user
+*.pro.user
+*.pro.user.*
+*.qmake.stash
+*.qmake.cache
+
+# Qt Creator 개인 설정 폴더 무시
+.qtcreator/
+
+# 기타 불필요한 파일
+*.autosave
+*.DS_Store
