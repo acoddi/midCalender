@@ -70,7 +70,7 @@
 // };
 
 
-///////////////////////////////////////////////////////////////수정 전
+/////////////////////////////////////////////////////////////수정 전
 
 
 #ifndef CALENDARWIDGET_H
@@ -94,6 +94,10 @@ public:
     void addSchedule(const QDate &date, const QString &text);
     void removeSchedule(const QDate &date, const QString &text);
 
+    void setHighlight(const QDate &date);
+    QMap<QDate, QStringList> getAllSchedules() const;
+
+
 private slots:
     void showNextMonth();
     void showPrevMonth();
@@ -113,6 +117,9 @@ private:
     QLabel *monthLabel;
     QMap<QDate, QStringList> scheduleData;
 
+    QDate highlightedDate;      // 강조 표시할 날짜
+
+
 signals:
     void dateDoubleClicked(const QDate &date);
 
@@ -121,4 +128,7 @@ protected:
 };
 
 #endif // CALENDARWIDGET_H
+
+
+
 

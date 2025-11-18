@@ -64,13 +64,6 @@ public:
     void addTodoItem(const QString &text, const QDate &start, const QDate &end);  // 일정 추가
     void setSelectedDate(const QDate &date);  // 선택된 날짜 설정
 
-public slots:
-
-signals:
-    void todoAdded(const QString &text, const QDate &start, const QDate &end);  // 할 일 추가 시그널
-    void todoRemoved(const QString &text, const QDate &date);                   // 특정 날짜에서 할 일 삭제 시그널
-
-private:
     QTabWidget *todoWidget;  // 할 일 목록을 표시하는 탭 위젯
     QListWidget *todoListWidget;  // 할 일 목록을 표시하는 리스트 위젯
     QTextEdit *todoEdit;
@@ -83,6 +76,19 @@ private:
     QMap<QDate, QStringList> todosByDate;
 
     void refreshTodoList();   // 현재 선택된 날짜의 리스트를 UI에 반영
+
+
+public slots:
+
+signals:
+    void todoAdded(const QString &text, const QDate &start, const QDate &end);  // 할 일 추가 시그널
+    void todoRemoved(const QString &text, const QDate &date);                   // 특정 날짜에서 할 일 삭제 시그널
+
+private:
+
+
+
+
 };
 
 #endif // SCHEDULE_H

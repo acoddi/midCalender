@@ -405,6 +405,18 @@ void CalendarWidget::populateCalendar()
                 cellLayout->addWidget(scheduleContent);
 
                 QDate cellDate(year, month, day);
+
+
+                if (cellDate == highlightedDate)
+                {
+                    cell->setStyleSheet("background-color: #4A90E2; color: white; border-radius: 4px;");
+                }
+                else
+                {
+                    cell->setStyleSheet("");
+                }
+
+
                 updateCellSchedules(cellDate);
 
                 ++day;
@@ -415,6 +427,7 @@ void CalendarWidget::populateCalendar()
             }
         }
     }
+
 }
 
 void CalendarWidget::showPrevMonth()
@@ -443,15 +456,29 @@ void CalendarWidget::showNextMonth()
 
 void CalendarWidget::onCellDoubleClicked(int row, int column)
 {
-    QDate firstDay(year, month, 1);
-    int startCol = firstDay.dayOfWeek() % 7;
-    int day = row*7 + column - startCol + 1;
+    // QDate firstDay(year, month, 1);
+    // int startCol = firstDay.dayOfWeek() % 7;
+    // int day = row*7 + column - startCol + 1;
 
-    if(day < 1 || day > firstDay.daysInMonth())
+    // if(day < 1 || day > firstDay.daysInMonth())
+    //     return;
+
+    // QDate clickedDate(year, month, day);
+    // emit dateDoubleClicked(clickedDate);
+
+    QDate first = QDate(year, month, 1);
+    int startCol = first.dayOfWeek() % 7;
+
+    int day = row * 7 + column - startCol + 1;
+    if(day < 1 || day > first.daysInMonth())
         return;
 
-    QDate clickedDate(year, month, day);
-    emit dateDoubleClicked(clickedDate);
+    QDate clicked(year, month, day);
+
+    highlightedDate = clicked;       // 강조 저장
+    emit dateDoubleClicked(clicked); // LeftList 등으로 signal 전달
+
+    populateCalendar();              // 강조 표시 반영
 }
 
 void CalendarWidget::addSchedule(const QDate &date, const QString &text)
@@ -547,6 +574,24 @@ void CalendarWidget::resizeEvent(QResizeEvent *event)
     prevBtn->move(tableX, topY);
     nextBtn->move(tableX + size - btnWidth, topY);
     monthLabel->move(tableX + (size - labelWidth)/2, topY);
+}
+
+
+void CalendarWidget::setHighlight(const QDate &date)
+{
+    if(!date.isValid()) return;
+
+    year = date.year();
+    month = date.month();
+    highlightedDate = date;
+
+    monthLabel->setText(QDate(year, month, 1).toString("yyyy-MM"));
+    populateCalendar();
+}
+
+QMap<QDate, QStringList> CalendarWidget::getAllSchedules() const
+{
+    return scheduleData;
 }
 
 

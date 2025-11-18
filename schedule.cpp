@@ -372,6 +372,7 @@ Schedule::Schedule(QWidget *parent)
 
     // 하단: 날짜 입력
     QHBoxLayout *dateLayout = new QHBoxLayout();
+
     fromLabel = new QLabel("시작일:", this);
     startDateEdit = new QDateEdit(selectedDate, this);
     startDateEdit->setCalendarPopup(true);
@@ -382,6 +383,7 @@ Schedule::Schedule(QWidget *parent)
 
     dateLayout->addWidget(fromLabel);
     dateLayout->addWidget(startDateEdit);
+
     dateLayout->addWidget(toLabel);
     dateLayout->addWidget(endDateEdit);
 
