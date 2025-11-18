@@ -1,36 +1,3 @@
-// #ifndef MAINWINDOW_H
-// #define MAINWINDOW_H
-
-// #include"CalendarWidget.h"
-// #include "leftlist.h"
-// #include"schedule.h"
-// #include "searchengine.h"
-// #include <QMainWindow>
-
-// QT_BEGIN_NAMESPACE
-// namespace Ui {
-// class MainWindow;
-// }
-// QT_END_NAMESPACE
-
-// class MainWindow : public QMainWindow
-// {
-//     Q_OBJECT
-
-// public:
-//     MainWindow(QWidget *parent = nullptr);
-//     ~MainWindow();
-
-// private:
-//     Ui::MainWindow *ui;
-//     CalendarWidget *calender;
-//     Schedule *schedule;
-//     searchengine *searchengine;
-//     LeftList *left;
-// };
-// #endif // MAINWINDOW_H
-
-
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -55,13 +22,13 @@ public:
     ~MainWindow();
 
 private slots:
-    // 🔍 검색 요청 처리
+    // 검색 요청 처리
     void performSearch(const QString &keyword);
 
-    // 🔎 검색 결과 더블클릭 → 달력 강조 이동
+    // 검색 결과 더블클릭 → 달력 강조 이동
     void highlightFromSearch(const QDate &date);
 
-    // 🔎 검색창 열기
+    // 검색창 열기
     void openSearchWindow();
 
 private:

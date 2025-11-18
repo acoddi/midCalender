@@ -22,12 +22,18 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="spacing">
      <number>0</number>
     </property>
     <item>
      <widget class="QLabel" name="label">
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <property name="text">
        <string>Ima</string>
       </property>
@@ -41,6 +47,15 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
+      <property name="cursorPosition">
+       <number>0</number>
+      </property>
      </widget>
     </item>
     <item>
@@ -51,8 +66,14 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::ContextMenuPolicy::DefaultContextMenu</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <property name="text">
-       <string>Search</string>
+       <string>검색</string>
       </property>
      </widget>
     </item>
@@ -67,18 +88,30 @@
      <height>291</height>
     </rect>
    </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="lineWidth">
+    <number>10</number>
+   </property>
+   <property name="spacing">
+    <number>10</number>
+   </property>
   </widget>
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
      <x>730</x>
-     <y>420</y>
+     <y>410</y>
      <width>80</width>
      <height>24</height>
     </rect>
    </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Close</string>
+    <string>닫기</string>
    </property>
   </widget>
  </widget>
